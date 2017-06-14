@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<appwidget-provider
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:initialLayout="@layout/wdg_word_layout"
+    android:minHeight="100dp"
+    android:minWidth="100dp"
+    android:previewImage="@android:drawable/ic_menu_add"
+    android:resizeMode="vertical|horizontal"
+    android:updatePeriodMillis="5000"
+    android:widgetCategory="home_screen">
+</appwidget-provider>
