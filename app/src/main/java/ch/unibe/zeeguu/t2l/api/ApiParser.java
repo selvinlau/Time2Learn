@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
+import ch.unibe.zeeguu.t2l.ListItem;
+
 /**
  * Created by LeveX on 13/06/2017.
  */
@@ -46,5 +48,33 @@ public class ApiParser {
 
         System.out.println(Arrays.toString(words.toArray()));
         return words;
+    }
+
+    public static ArrayList<ListItem> loadArticles(String article_json) {
+        ArrayList<ListItem> listItemList = new ArrayList<>();
+        JSONParser parser = new JSONParser();
+        if(article_json == null || article_json.equals(""))
+            return listItemList;
+
+        try{
+
+            JSONArray arr = (JSONArray) parser.parse(article_json);
+            Iterator<JSONObject> it = arr.iterator();
+            JSONObject obj;
+
+            while(it.hasNext()){
+                obj = it.next();
+                ListItem item = new ListItem((String) obj.get("title"), (String)obj.get("summary"),(String) obj.get("url"));
+                listItemList.add(item);
+                System.out.println(item.title);
+            }
+
+
+        }
+        catch(ParseException e){
+
+        }
+        System.out.println(Arrays.toString(listItemList.toArray()));
+        return listItemList;
     }
 }

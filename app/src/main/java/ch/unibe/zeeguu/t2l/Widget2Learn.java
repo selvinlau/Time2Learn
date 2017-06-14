@@ -31,6 +31,8 @@ import ch.unibe.zeeguu.t2l.net.DataReceiver;
 
 public class Widget2Learn extends AppWidgetProvider {
 
+    SharedPreferences prefs;
+
     ArrayList<ZeeguuWord> words = new ArrayList<ZeeguuWord>();
     int idx = 0;
 

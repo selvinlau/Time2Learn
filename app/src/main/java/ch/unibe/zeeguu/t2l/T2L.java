@@ -29,6 +29,7 @@ public class T2L extends AppCompatActivity implements DataReceiver {
 
     public static final String PREF_BOOKMARKS = "pref_bookmarks";
     public static final String PREF_LANGUAGE = "pref_lang";
+    public static final String PREF_ARTICLES = "pref_articles";
     public static final String PREF_UUID = "pref_uuid";
     public static final String PREF_PASSWORD = "pref_password";
     public static final String PREF_SESSION = "pref_session";
@@ -97,9 +98,24 @@ public class T2L extends AppCompatActivity implements DataReceiver {
         // register language
         success = ZeeguuAPI.registerLanguage(language, account, this);
 
+
         if(success) {
-            Intent intent = new Intent(this, LanguageSelected.class);
-            startActivity(intent);
+            //Suppose to get  /interesting_feeds/<language_id>?session
+            //Filter by language chosen
+            //Sub to a couple of feeds from result
+            //For now, Subscribe to feed 80
+
+            success = ZeeguuAPI.startFollowingFeedWithId(account,75);
+            if(success){
+                //retrieve article
+                ArticleReceiver rec = new ArticleReceiver(this);
+                ZeeguuAPI.getTopRecommendedArticles(account,rec);
+
+                Intent intent = new Intent(this, LanguageSelected.class);
+                startActivity(intent);
+            }
+
+
         }
     }
 

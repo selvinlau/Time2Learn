@@ -3,9 +3,17 @@ package ch.unibe.zeeguu.t2l.api;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
+import ch.unibe.zeeguu.t2l.ListItem;
 import ch.unibe.zeeguu.t2l.T2L;
 import ch.unibe.zeeguu.t2l.net.DataDownloader;
 import ch.unibe.zeeguu.t2l.net.DataReceiver;
@@ -22,6 +30,8 @@ public class ZeeguuAPI {
     public static final String API_LEARNED_LANGUAGE = "https://zeeguu.unibe.ch/api/learned_language/%s?session=%s";
     public static final String API_SIGN_IN = "https://zeeguu.unibe.ch/api/get_anon_session/%s";
     public static final String API_BOOKMARKS_TO_STUDY = "https://zeeguu.unibe.ch/api/bookmarks_to_study/%d?session=%d";
+    public static final String API_GET_TOP_RECOMMENDED_ARTICLES = "https://zeeguu.unibe.ch/api/get_top_recommended_articles/%d?session=%d";
+    public static final String API_START_FOLLOWING_FEED_WITH_ID = "https://zeeguu.unibe.ch/api/start_following_feed_with_id?session=%d";
 
     public static String[] languagesStr2Array(String list) {
 
@@ -114,7 +124,32 @@ public class ZeeguuAPI {
         new DataDownloader(receiver).execute(url);
     }
 
+    public static void getTopRecommendedArticles(ZeeguuAccount account, DataReceiver receiver){
+        ArrayList<ListItem> listItemList = new ArrayList<ListItem>();
+        int count = 3;
+        String url = String.format(API_GET_TOP_RECOMMENDED_ARTICLES, count, account.getSession());
 
+        System.out.println("URL: " + url);
+
+        new DataDownloader(receiver).execute(url);
+    }
+
+    public static boolean startFollowingFeedWithId(ZeeguuAccount account,int feed_id){
+        String url = String.format(API_START_FOLLOWING_FEED_WITH_ID, account.getSession());
+
+        HttpData data = new HttpData(url);
+
+        data.addParameter("feed_id", ""+feed_id);
+
+        sendHttpRequest(data);
+
+        if (data.successResponse()) {
+            System.out.println("Subscribed");
+            return true;
+        }else{
+            return false;
+        }
+    }
 
 
     public static String sendHttpRequest(HttpData data){
@@ -130,6 +165,8 @@ public class ZeeguuAPI {
 
         return result;
     }
+
+
 
 
     public static String generatePass() {

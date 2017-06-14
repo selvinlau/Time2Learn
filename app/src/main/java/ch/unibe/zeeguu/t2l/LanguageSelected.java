@@ -64,7 +64,6 @@ public class LanguageSelected extends AppCompatActivity implements DataReceiver 
     public void receiveData(Object o) {
         String data = (String) o;
         System.out.println("Loaded data:: " + data);
-
         prefs.edit().putString(T2L.PREF_BOOKMARKS, data).commit();
     }
 }
